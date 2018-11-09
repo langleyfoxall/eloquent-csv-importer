@@ -3,13 +3,11 @@
 namespace LangleyFoxall\EloquentCSVImporter;
 
 use Illuminate\Support\Collection;
-
 use LangleyFoxall\EloquentCSVImporter\Models\CSVDefinition;
 use LangleyFoxall\EloquentCSVImporter\Exceptions\UnknownCSVMappableColumnException;
 
 class CSVDefinitionFactory
 {
-
     protected $mappable;
     protected $meta;
     protected $maps = [];
@@ -58,8 +56,10 @@ class CSVDefinitionFactory
         return $csvDefinition;
     }
 
-    protected function validMaps($maps) {
+    protected function validMaps($maps)
+    {
         $arrayValues = array_values($maps);
+
         return !empty(array_intersect_key($arrayValues, $this->getMappableColumns()->toArray()));
     }
 
@@ -71,6 +71,7 @@ class CSVDefinitionFactory
     public function setMeta($attributes)
     {
         $this->meta = $attributes;
+
         return $this;
     }
 
@@ -87,6 +88,7 @@ class CSVDefinitionFactory
             throw new UnknownCSVMappableColumnException('Unknown column mapping: '.$to);
         }
         $this->maps[$from] = $to;
+
         return $this;
     }
 
@@ -99,9 +101,10 @@ class CSVDefinitionFactory
     public function mapColumns($array)
     {
         if (!$this->validMaps($array)) {
-            throw new UnknownCSVMappableColumnException("Unknown column mapping in array");
+            throw new UnknownCSVMappableColumnException('Unknown column mapping in array');
         }
         $this->maps = $array;
+
         return $this;
     }
 
@@ -121,6 +124,7 @@ class CSVDefinitionFactory
     {
         $definition = $this->newDefinitionsModel();
         $definition->save();
+
         return $definition;
     }
 }

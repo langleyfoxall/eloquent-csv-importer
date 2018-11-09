@@ -8,7 +8,6 @@ use League\Csv\Reader;
 
 class CSVParser
 {
-
     protected $reader;
 
     /**

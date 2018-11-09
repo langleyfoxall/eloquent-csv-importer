@@ -6,7 +6,6 @@ use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\File;
 use Illuminate\Support\Collection;
-
 use LangleyFoxall\EloquentCSVImporter\CSVParser;
 use LangleyFoxall\EloquentCSVImporter\Exceptions\UnknownCSVMappableColumnException;
 use League\Csv\Exception;
@@ -21,7 +20,6 @@ class CSVDefinition extends Model
     /**
      * @var array
      */
-
     protected $casts = [
         'mappings' => 'array',
     ];
@@ -62,13 +60,13 @@ class CSVDefinition extends Model
         $mappings = $this->getMappings();
 
         if (!array_key_exists($from, $mappings)) {
-            throw new UnknownCSVMappableColumnException("Unknown column mapping: ".$from);
+            throw new UnknownCSVMappableColumnException('Unknown column mapping: '.$from);
         }
 
         $toKey = $mappings[$from];
 
         if (!$this->getMappable()::getCSVMappableColumns()->contains($toKey)) {
-            throw new UnknownCSVMappableColumnException("Unknown model mapping: ".$toKey);
+            throw new UnknownCSVMappableColumnException('Unknown model mapping: '.$toKey);
         }
 
         return $toKey;
@@ -91,12 +89,13 @@ class CSVDefinition extends Model
 
         foreach ($parserIterator as $parsedRow) {
             $model = $this->getMappable();
-            foreach($parsedRow as $fieldKey => $fieldValue) {
+            foreach ($parsedRow as $fieldKey => $fieldValue) {
                 $toKey = $this->getValidToProperty($fieldKey);
                 $model->setAttribute($toKey, $fieldValue);
             }
             $mappedModels->push($model);
         }
+
         return $mappedModels;
     }
 
@@ -126,6 +125,7 @@ class CSVDefinition extends Model
         DB::transaction(function () use ($models) {
             $models->each->save();
         });
+
         return $models;
     }
 

@@ -1,6 +1,6 @@
 # 💾 Eloquent CSV Importer
 
-Eloquent CSV Importer helps create and store columns maps to enable the easy conversion of CSV data to Eloquent models
+Eloquent CSV Importer helps create and store column maps to enable the easy conversion of CSV data to Eloquent models
 
 <p align="center">
     <img src="assets/images/example-code.png">
@@ -14,7 +14,7 @@ Eloquent CSV Importer can be easily installed using Composer. Just run the follo
 composer require langleyfoxall/eloquent-csv-importer
 ```
 
-The service provider is to set to be auto discovered in newer versions of Laravel - in older versions you will have to manuallly register it in `config/app.php`
+The service provider is to set to be auto discovered in Larave 5.5+ - in older versions you will have to manually register it in `config/app.php`
 
 ```
 LangleyFoxall\EloquentCSVImporter\EloquentCSVImporterServiceProvider::class

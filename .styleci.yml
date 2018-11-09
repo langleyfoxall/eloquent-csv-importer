@@ -1,0 +1,16 @@
+php:
+  preset: laravel
+
+  risky: true
+
+  disabled:
+    - short_array_syntax
+    - phpdoc_summary
+    - length_ordered_imports
+    - phpdoc_no_package
+    - concat_without_spaces
+    - not_operator_with_successor_space
+
+  finder:
+    exclude:
+      - "vendor"

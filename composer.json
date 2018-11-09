@@ -1,0 +1,29 @@
+{
+    "name": "langleyfoxall/eloquent-csv-importer",
+    "description": "Easily map CSV files to Eloquent models",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex Catchpole",
+            "email": "alex@langleyfoxall.co.uk",
+            "role": "Maintainer"
+        }
+    ],
+    "require": {
+        "php": "^7.0.0",
+        "illuminate/support": ">=5.0",
+        "illuminate/database": ">=5.0",
+        "illuminate/http": ">=5.0",
+        "league/csv": "^9.1"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LangleyFoxall\\EloquentCSVImporter\\EloquentCSVImporterServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    }
+}

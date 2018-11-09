@@ -13,8 +13,7 @@ class CreateCsvDefinitionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('csv_definitions', function (Blueprint $table)
-        {
+        Schema::create('csv_definitions', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('name');
@@ -29,7 +28,6 @@ class CreateCsvDefinitionsTable extends Migration
 
             $table->unsignedInteger('assigned_id')->nullable();
             $table->string('assigned_type')->nullable();
-
         });
     }
 

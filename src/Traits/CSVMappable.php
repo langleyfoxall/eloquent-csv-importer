@@ -14,6 +14,7 @@ trait CSVMappable
     public static function getCSVMappableColumns()
     {
         $table = with(new static)->getTable();
+
         return collect(Schema::getColumnListing($table));
     }
 }

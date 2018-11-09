@@ -26,5 +26,10 @@
             "aliases": {
             }
         }
+    },
+    "autoload": {
+        "psr-4": {
+            "LangleyFoxall\\EloquentCSVImporter\\": "src/"
+        }
     }
 }

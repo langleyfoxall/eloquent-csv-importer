@@ -56,6 +56,10 @@ class CSVDefinitionFactory
         return $csvDefinition;
     }
 
+    /**
+     * Ensure that the passed in maps are valid
+     * @param array $maps
+     */
     protected function validMaps($maps)
     {
         $arrayValues = array_values($maps);

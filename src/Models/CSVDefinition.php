@@ -58,7 +58,7 @@ class CSVDefinition extends Model
     protected function getValidToProperty($from)
     {
         $mappings = $this->getMappings();
-
+        \Log::info($from, $mappings);
         if (!array_key_exists($from, $mappings)) {
             throw new UnknownCSVMappableColumnException('Unknown column mapping: '.$from);
         }
@@ -82,16 +82,18 @@ class CSVDefinition extends Model
     protected function instantiateModels($data)
     {
         $csvParser = new CSVParser($data);
-
         $parserIterator = $csvParser->getIterator();
-
         $mappedModels = collect();
+
+        $mappings = $this->getMappings();
+        $mappingKeys = array_keys($mappings);
 
         foreach ($parserIterator as $parsedRow) {
             $model = $this->getMappable();
-            foreach ($parsedRow as $fieldKey => $fieldValue) {
-                $toKey = $this->getValidToProperty($fieldKey);
-                $model->setAttribute($toKey, $fieldValue);
+            foreach ($mappingKeys as $mapFrom) {
+                $CSVValue = $parsedRow[$mapFrom];
+                $toKey = $this->getValidToProperty($mapFrom);
+                $model->setAttribute($toKey, $CSVValue);
             }
             $mappedModels->push($model);
         }

@@ -18,7 +18,7 @@ class CSVParser
      */
     public function __construct($data, $headerOffset = 0)
     {
-        if ($data instanceof File) {
+        if ($data instanceof UploadedFile || $data instanceof File) {
             $this->reader = Reader::createFromFileObject($data->openFile());
         }
 

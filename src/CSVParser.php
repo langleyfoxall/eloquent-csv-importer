@@ -3,6 +3,7 @@
 namespace LangleyFoxall\EloquentCSVImporter;
 
 use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 use League\Csv\Exception;
 use League\Csv\Reader;
 

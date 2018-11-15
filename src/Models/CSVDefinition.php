@@ -32,12 +32,28 @@ class CSVDefinition extends Model
     ];
 
     /**
-     * Return an instance of the mappable class
+     * Find or return existing instance of the mappable class
      * @return mixed
      */
-    protected function getMappable()
+    protected function getMappable($searchAttributes = null)
     {
+        if ($searchAttributes) {
+            return $this->getMappableForQuery($searchAttributes);
+        }
+        return $this->getMappableInstance();
+    }
+
+    protected function getMappableInstance() {
         return new $this->mappable_type;
+    }
+
+    protected function getMappableForQuery($searchAttributes)
+    {
+        $r = new \ReflectionClass($this->mappable_type);
+        $instance =  $r->newInstanceWithoutConstructor();
+
+        //Attempt to find model for the search attributes
+        return $instance->firstOrNew($searchAttributes);
     }
 
     /**
@@ -58,7 +74,6 @@ class CSVDefinition extends Model
     protected function getValidToProperty($from)
     {
         $mappings = $this->getMappings();
-        \Log::info($from, $mappings);
         if (!array_key_exists($from, $mappings)) {
             throw new UnknownCSVMappableColumnException('Unknown column mapping: '.$from);
         }
@@ -73,13 +88,35 @@ class CSVDefinition extends Model
     }
 
     /**
+     * Get a model instance
+     * @param $parsedRow
+     * @param $updateWithColumns
+     * @return mixed
+     * @throws UnknownCSVMappableColumnException
+     */
+    protected function getModel($parsedRow, $updateWithColumns)
+    {
+        if (!empty($updateWithColumns)) {
+            $queryParams = [];
+            foreach($updateWithColumns as $column) {
+                $CSVValue = $parsedRow[$column];
+                $toKey = $this->getValidToProperty($column);
+                $queryParams[$toKey] = $CSVValue;
+            }
+            return $this->getMappable($queryParams);
+        }
+        return $this->getMappable();
+    }
+
+    /**
      * Map either a file or a CSV string to an array of models
      * @param File||String $data
+     * @param array $updateWithColumns
      * @return Collection
      * @throws UnknownCSVMappableColumnException
      * @throws Exception
      */
-    protected function instantiateModels($data)
+    protected function instantiateModels($data, $updateWithColumns)
     {
         $csvParser = new CSVParser($data);
         $parserIterator = $csvParser->getIterator();
@@ -89,7 +126,8 @@ class CSVDefinition extends Model
         $mappingKeys = array_keys($mappings);
 
         foreach ($parserIterator as $parsedRow) {
-            $model = $this->getMappable();
+            //on the row, grab the values inside of the search columns
+            $model = $this->getModel($parsedRow, $updateWithColumns);
             foreach ($mappingKeys as $mapFrom) {
                 $CSVValue = $parsedRow[$mapFrom];
                 $toKey = $this->getValidToProperty($mapFrom);
@@ -108,7 +146,7 @@ class CSVDefinition extends Model
      * @throws Exception
      * @throws UnknownCSVMappableColumnException
      */
-    public function makeModels($data)
+    public function makeModels($data, $updateWithColumns)
     {
         return $this->instantiateModels($data);
     }
@@ -116,14 +154,15 @@ class CSVDefinition extends Model
     /**
      * Parse a csv file or string and return a collection of models that have been saved to the Database
      * @param $data
+     * @param $updateWithColumns - Columns to update row by if they match
      * @return Collection
      * @throws Exception
      * @throws UnknownCSVMappableColumnException
      * @throws \Throwable
      */
-    public function createModels($data)
+    public function createModels($data, $updateWithColumns)
     {
-        $models = $this->instantiateModels($data);
+        $models = $this->instantiateModels($data, $updateWithColumns);
         DB::transaction(function () use ($models) {
             $models->each->save();
         });

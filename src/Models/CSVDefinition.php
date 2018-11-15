@@ -148,7 +148,7 @@ class CSVDefinition extends Model
      */
     public function makeModels($data, $updateWithColumns)
     {
-        return $this->instantiateModels($data);
+        return $this->instantiateModels($data, $updateWithColumns);
     }
 
     /**

@@ -15,7 +15,9 @@
         "illuminate/support": ">=5.0",
         "illuminate/database": ">=5.0",
         "illuminate/http": ">=5.0",
-        "league/csv": "^9.1"
+        "league/csv": "^9.1",
+        "phpunit/phpunit": "^7.4",
+        "mockery/mockery": "^1.2"
     },
     "extra": {
         "laravel": {
@@ -29,6 +31,12 @@
     "autoload": {
         "psr-4": {
             "LangleyFoxall\\EloquentCSVImporter\\": "src/"
+        },
+        "autoload-dev": {
+            "LangleyFoxall\\EloquentCSVImporter\\Tests\\": "tests/"
         }
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.0"
     }
 }

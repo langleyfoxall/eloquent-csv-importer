@@ -35,6 +35,7 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "~3.0"
+        "orchestra/testbench": "~3.0",
+        "php-coveralls/php-coveralls": "^2.1"
     }
 }

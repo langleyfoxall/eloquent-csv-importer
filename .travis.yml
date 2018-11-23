@@ -6,9 +6,9 @@ php:
 before_script:
   - composer install --no-interaction
 script:
-  - "./vendor/bin/phpunit --coverage-clover=coverage.xml"
-after_script:
-  - bash <(curl -s https://codecov.io/bash)
+  - "./vendor/bin/phpunit --coverage-clover=tests/logs/coverage.xml"
+after_success:
+  - travis_retry php vendor/bin/php-coveralls -v
 cache:
   directories:
     - vendor

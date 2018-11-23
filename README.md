@@ -1,5 +1,6 @@
 # 💾 Eloquent CSV Importer
 ![Travis Status](https://travis-ci.org/langleyfoxall/eloquent-csv-importer.svg?branch=master)
+![StyleCI Statud](https://github.styleci.io/repos/156700491/shield?branch=master)
 
 Eloquent CSV Importer helps create and store column maps to enable the easy conversion of CSV data to Eloquent models
 

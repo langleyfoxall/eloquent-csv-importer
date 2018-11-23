@@ -8,7 +8,6 @@ use Orchestra\Testbench\TestCase;
 
 class CSVDefinitionTest extends TestCase
 {
-
     protected function getPackageProviders($app)
     {
         return [
@@ -45,7 +44,7 @@ class CSVDefinitionTest extends TestCase
             'column1_map_to' => 'hello world',
             'column2_map_to' => 'hello world 2',
             'column3_map_to' => 'hello world 3',
-            'column4_map_to' => "12.5"
+            'column4_map_to' => '12.5',
         ]);
 
         $definitionSingle = $this->createDefinition(false);
@@ -55,13 +54,13 @@ class CSVDefinitionTest extends TestCase
             'id' => $modelsSingle[0]->id,
             'column1_map_to' => 'hello world',
         ]);
-
     }
 
     /**
      * Tests the updating of
      */
-    public function testModelCreateUpdate() {
+    public function testModelCreateUpdate()
+    {
         $file = file_get_contents(__DIR__ . '/assets/valid.csv');
         $definitionMulti = $this->createDefinition(true);
 
@@ -72,7 +71,7 @@ class CSVDefinitionTest extends TestCase
             'column1_map_to' => 'hello world',
             'column2_map_to' => 'hello world 2',
             'column3_map_to' => 'hello world 3',
-            'column4_map_to' => "12.5"
+            'column4_map_to' => '12.5',
         ]);
 
         $updateFile = file_get_contents(__DIR__ . '/assets/valid-update.csv');
@@ -82,7 +81,7 @@ class CSVDefinitionTest extends TestCase
 
         $this->assertDatabaseHas('test_models', [
             'id' => $updatedModules[0]->id,
-            'column4_map_to' => "15.0"
+            'column4_map_to' => '15.0',
         ]);
     }
 
@@ -101,11 +100,12 @@ class CSVDefinitionTest extends TestCase
                 'column1' => 'column1_map_to',
                 'column2' => 'column2_map_to',
                 'column3' => 'column3_map_to',
-                'column4' => 'column4_map_to'
+                'column4' => 'column4_map_to',
             ]);
-        }else {
+        } else {
             $factory->mapColumn('column1', 'column1_map_to');
         }
+
         return $factory->create();
     }
 

@@ -3,7 +3,6 @@
 namespace LangleyFoxall\EloquentCSVImporter\Tests;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use LangleyFoxall\EloquentCSVImporter\Traits\CSVMappable;
 
 class TestModel extends Model

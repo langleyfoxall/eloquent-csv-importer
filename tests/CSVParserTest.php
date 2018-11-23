@@ -6,7 +6,6 @@ use Orchestra\Testbench\TestCase;
 
 class CSVParserTest extends TestCase
 {
-
     /**
      * Test the CSV Parser
      * @throws \League\Csv\Exception
@@ -45,5 +44,4 @@ class CSVParserTest extends TestCase
             'column4' => '12.50',
         ], $values[1]);
     }
-
 }

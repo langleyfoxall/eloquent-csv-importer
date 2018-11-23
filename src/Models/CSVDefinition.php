@@ -40,17 +40,19 @@ class CSVDefinition extends Model
         if ($searchAttributes) {
             return $this->getMappableForQuery($searchAttributes);
         }
+
         return $this->getMappableInstance();
     }
 
-    protected function getMappableInstance() {
+    protected function getMappableInstance()
+    {
         return new $this->mappable_type;
     }
 
     protected function getMappableForQuery($searchAttributes)
     {
         $r = new \ReflectionClass($this->mappable_type);
-        $instance =  $r->newInstanceWithoutConstructor();
+        $instance = $r->newInstanceWithoutConstructor();
 
         //Attempt to find model for the search attributes
         return $instance->firstOrNew($searchAttributes);
@@ -98,13 +100,15 @@ class CSVDefinition extends Model
     {
         if (!empty($updateWithColumns)) {
             $queryParams = [];
-            foreach($updateWithColumns as $column) {
+            foreach ($updateWithColumns as $column) {
                 $CSVValue = $parsedRow[$column];
                 $toKey = $this->getValidToProperty($column);
                 $queryParams[$toKey] = $CSVValue;
             }
+
             return $this->getMappable($queryParams);
         }
+
         return $this->getMappable();
     }
 

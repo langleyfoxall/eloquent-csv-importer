@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\File;
 use LangleyFoxall\EloquentCSVImporter\CSVDefinitionFactory;
 use LangleyFoxall\EloquentCSVImporter\Models\CSVDefinition;
 use LangleyFoxall\EloquentCSVImporter\Tests\TestModel;
@@ -8,7 +7,6 @@ use Orchestra\Testbench\TestCase;
 
 class CSVDefinitionFactoryTest extends TestCase
 {
-
     /**
      * @param \Illuminate\Foundation\Application $app
      * @return array
@@ -46,7 +44,7 @@ class CSVDefinitionFactoryTest extends TestCase
             'id' => $definitionMulti->id,
             'name' => 'hello world',
             'description' => 'hello world description',
-            'mappings' => "\"{\\\"column1\\\":\\\"column1_map_to\\\",\\\"column2\\\":\\\"column2_map_to\\\",\\\"column3\\\":\\\"column3_map_to\\\",\\\"column4\\\":\\\"column4_map_to\\\"}\""
+            'mappings' => '"{\\"column1\\":\\"column1_map_to\\",\\"column2\\":\\"column2_map_to\\",\\"column3\\":\\"column3_map_to\\",\\"column4\\":\\"column4_map_to\\"}"',
         ]);
 
         $definitionSingle = $this->createDefinition(false);
@@ -55,7 +53,7 @@ class CSVDefinitionFactoryTest extends TestCase
             'id' => $definitionSingle->id,
             'name' => 'hello world',
             'description' => 'hello world description',
-            'mappings' => "\"{\\\"column1\\\":\\\"column1_map_to\\\"}\""
+            'mappings' => '"{\\"column1\\":\\"column1_map_to\\"}"',
         ]);
     }
 
@@ -74,11 +72,12 @@ class CSVDefinitionFactoryTest extends TestCase
                 'column1' => 'column1_map_to',
                 'column2' => 'column2_map_to',
                 'column3' => 'column3_map_to',
-                'column4' => 'column4_map_to'
+                'column4' => 'column4_map_to',
             ]);
-        }else {
+        } else {
             $factory->mapColumn('column1', 'column1_map_to');
         }
+
         return $factory->create();
     }
 

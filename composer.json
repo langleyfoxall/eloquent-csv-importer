@@ -15,9 +15,7 @@
         "illuminate/support": ">=5.0",
         "illuminate/database": ">=5.0",
         "illuminate/http": ">=5.0",
-        "league/csv": "^9.1",
-        "phpunit/phpunit": "^7.4",
-        "mockery/mockery": "^1.2"
+        "league/csv": "^9.1"
     },
     "extra": {
         "laravel": {
@@ -35,6 +33,8 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "~3.0"
+        "orchestra/testbench": "3.7.*",
+        "phpunit/phpunit": "^7.4",
+        "mockery/mockery": "^1.2"
     }
 }

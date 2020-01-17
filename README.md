@@ -109,3 +109,21 @@ $products = $def->makeModels($csvFile, ['product ID', 'price']);
 ```
 
 This will update an existing product where both values in the product are equal to the specified values in the CSV row.
+
+#### Data item manipulation
+
+If you wish, you can manipulate the data as it is being imported from the CSV. To do this, you must create a new a
+data item manipulator function, and then set it against the CSV definition.
+
+The data item manipulator function will receive the data item key, value, and a copy of the entire row
+from the CSV. After making changes, it should return the modified data item value.
+
+The example below converts any value it receives to uppercase.
+
+```php
+$definition->setDataItemManipulator(function($key, $value, $row) {
+    return strtoupper($value);
+});
+```
+
+The data item manipulator should be set before you call the `makeModels` or `createModels` methods.

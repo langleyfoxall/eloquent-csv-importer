@@ -32,6 +32,25 @@ class CSVDefinition extends Model
     ];
 
     /**
+     * Callable used to manipulate individual data items while importing from the CSV.
+     *
+     * @var callable
+     */
+    private $dataItemManipulator;
+
+    /**
+     * CSVDefinition constructor.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->setDataItemManipulator([$this, 'defaultDataItemManipulator']);
+    }
+
+    /**
      * Find or return existing instance of the mappable class
      * @return mixed
      */
@@ -125,6 +144,7 @@ class CSVDefinition extends Model
         $csvParser = new CSVParser($data);
         $parserIterator = $csvParser->getIterator();
         $mappedModels = collect();
+        $dataItemManipulator = $this->dataItemManipulator;
 
         $mappings = $this->getMappings();
         $mappingKeys = array_keys($mappings);
@@ -135,12 +155,44 @@ class CSVDefinition extends Model
             foreach ($mappingKeys as $mapFrom) {
                 $CSVValue = $parsedRow[$mapFrom];
                 $toKey = $this->getValidToProperty($mapFrom);
+
+                $CSVValue = $dataItemManipulator($toKey, $CSVValue, $parsedRow);
+
                 $model->setAttribute($toKey, $CSVValue);
             }
             $mappedModels->push($model);
         }
 
         return $mappedModels;
+    }
+
+    /**
+     * Set a callable to use as a the data item manipulator. This callable will be passed
+     * the data item's key and value, and full data row.
+     *
+     * @param callable $dataItemManipulator
+     */
+    public function setDataItemManipulator(callable $dataItemManipulator)
+    {
+        $this->dataItemManipulator = $dataItemManipulator;
+    }
+
+    /**
+     * This is the default data item manipulator. It performs no manipulation, and simply
+     * return the passed value.
+     *
+     * If you want to manipulate data during the CSV import, you should provide your
+     * own data item manipulator callable, and pass it to the `setDataItemManipulator`
+     * method.
+     *
+     * @param $key
+     * @param $value
+     * @param $row
+     * @return mixed
+     */
+    public function defaultDataItemManipulator($key, $value, $row)
+    {
+        return $value;
     }
 
     /**

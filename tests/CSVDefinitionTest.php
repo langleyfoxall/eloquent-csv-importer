@@ -57,6 +57,42 @@ class CSVDefinitionTest extends TestCase
     }
 
     /**
+     * Test the creation of models from a definition, with a data item manipulator
+     */
+    public function testModelCreationWithDataItemManipulator()
+    {
+        $file = file_get_contents(__DIR__ . '/assets/valid.csv');
+        $definitionMulti = $this->createDefinition(true);
+
+        $definitionMulti->setDataItemManipulator(function($key, $value) {
+            return strtoupper($value);
+        });
+
+        $modelsMulti = $definitionMulti->createModels($file, []);
+
+        $this->assertDatabaseHas('test_models', [
+            'id' => $modelsMulti[0]->id,
+            'column1_map_to' => 'HELLO WORLD',
+            'column2_map_to' => 'HELLO WORLD 2',
+            'column3_map_to' => 'HELLO WORLD 3',
+            'column4_map_to' => '12.5',
+        ]);
+
+        $definitionSingle = $this->createDefinition(false);
+
+        $definitionSingle->setDataItemManipulator(function($key, $value) {
+            return strtoupper($value);
+        });
+
+        $modelsSingle = $definitionSingle->createModels($file, []);
+
+        $this->assertDatabaseHas('test_models', [
+            'id' => $modelsSingle[0]->id,
+            'column1_map_to' => 'HELLO WORLD',
+        ]);
+    }
+
+    /**
      * Tests the updating of
      */
     public function testModelCreateUpdate()
